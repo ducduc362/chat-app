@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from "react";
 import firebase from "firebase";
 import ChatRoom from "./Components/ChatRoom";
+import { useRouter } from "next/dist/client/router";
+import { io } from 'socket.io-client';
+
+const socket = io("https://7d47926ba040.ngrok.io/")
+
+socket.on('server-send-room', (data: string) => {
+    if (data) {
+        window.localStorage.setItem('room', data);
+    }
+})
 
 if (!firebase.apps.length) {
     firebase.initializeApp({
-        apiKey: "AIzaSyBgPYywAAYgyH1Qf_VPoOFSkqHRNSuWWdU",
-        authDomain: "chat-app-7d924.firebaseapp.com",
-        projectId: "chat-app-7d924",
-        storageBucket: "chat-app-7d924.appspot.com",
-        messagingSenderId: "447753363638",
-        appId: "1:447753363638:web:fbdb3e607cd6cf663f8617",
-        measurementId: "G-5F2DWMEXYR",
+        apiKey: "AIzaSyCV7878uJtuWZdCUmfe-AdHBNBsFi3TOFs",
+        authDomain: "chat-22b55.firebaseapp.com",
+        databaseURL: "https://chat-22b55-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "chat-22b55",
+        storageBucket: "chat-22b55.appspot.com",
+        messagingSenderId: "288126055205",
+        appId: "1:288126055205:web:86772a74bc245e60e160cc",
+        measurementId: "G-8GD29QPM7Z"
     });
 } else {
     firebase.app();
@@ -21,6 +32,7 @@ const db = firebase.firestore();
 
 const signInWithGoogle = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
+
     auth.useDeviceLanguage();
 
     try {
@@ -34,6 +46,7 @@ const signInWithGoogle = async () => {
 const signOut = async () => {
     try {
         await firebase.auth().signOut();
+        localStorage.clear();
     } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error);
@@ -41,16 +54,31 @@ const signOut = async () => {
 };
 
 export default function Home() {
-    const [user, setUser] = useState(() => auth.currentUser);
+    const [user, setUser] = useState<any>(() => auth.currentUser);
+
+    const router = useRouter();
 
     useEffect(() => {
+        const iGender = window.localStorage.getItem('gender');
+        const user = window.localStorage.getItem('email');
+        const room = window.localStorage.getItem('room')
+
         auth.onAuthStateChanged((iUser) => {
-            if (iUser) {
-                setUser(iUser)
-            } else {
+            if (iUser && iGender) {
+                setUser(iUser);
+                let loadRoom = setInterval(() => socket.emit("client-get-room", user), 2000);
+                if (room !== null) {
+                    clearInterval(loadRoom);
+                }
+            } else if (iUser && iGender == null) {
+                setUser(iUser);
+                router.push('/form');
+            }
+            else {
                 setUser(null)
             }
         })
+
     }, []);
 
     return (
@@ -72,4 +100,3 @@ export default function Home() {
         </div>
     )
 }
-

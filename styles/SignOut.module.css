@@ -1,0 +1,41 @@
+.container {
+  text-align: center;
+  margin: 0 auto;
+  max-width: 728px;
+}
+
+/* sign out */
+#sign_out {
+  background-color: #181717;
+  height: 10vh;
+  min-height: 50px;
+  color: white;
+  position: fixed;
+  width: 100%;
+  max-width: 728px;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 99;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+#sign_out button {
+  background-color: #282c34;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  display: inline-block;
+  cursor: pointer;
+  font-size: 1.25em;
+  border-radius: 15px;
+}
+
+#sign_out button:hover {
+  color: white;
+  background-color: rgb(170, 43, 43);
+}

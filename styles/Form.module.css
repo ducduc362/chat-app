@@ -1,8 +1,9 @@
-.h1 {
+/* .container {
   text-align: center;
-}
+  margin: 0 auto;
+  max-width: 728px;
+} */
 
-.selected {
-  width: 50%;
-  margin-left: 25%;
-}
+/* .ant-form {
+  width: 20%;
+} */

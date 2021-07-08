@@ -3,14 +3,10 @@ import firebase from "firebase";
 import ChatRoom from "./Components/ChatRoom";
 import { useRouter } from "next/dist/client/router";
 import { io } from 'socket.io-client';
+import styleSignIn from '../styles/SignIn.module.css';
+import styleSignOut from '../styles/SignOut.module.css';
 
-const socket = io("https://7d47926ba040.ngrok.io/")
-
-socket.on('server-send-room', (data: string) => {
-    if (data) {
-        window.localStorage.setItem('room', data);
-    }
-})
+const socket = io("https://matchingapp05052000.herokuapp.com")
 
 if (!firebase.apps.length) {
     firebase.initializeApp({
@@ -28,7 +24,6 @@ if (!firebase.apps.length) {
 }
 
 const auth = firebase.auth();
-const db = firebase.firestore();
 
 const signInWithGoogle = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -60,16 +55,10 @@ export default function Home() {
 
     useEffect(() => {
         const iGender = window.localStorage.getItem('gender');
-        const user = window.localStorage.getItem('email');
-        const room = window.localStorage.getItem('room')
 
         auth.onAuthStateChanged((iUser) => {
             if (iUser && iGender) {
                 setUser(iUser);
-                let loadRoom = setInterval(() => socket.emit("client-get-room", user), 2000);
-                if (room !== null) {
-                    clearInterval(loadRoom);
-                }
             } else if (iUser && iGender == null) {
                 setUser(iUser);
                 router.push('/form');
@@ -82,21 +71,25 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="App">
+        <>
             {user ? (
-                <>
-                    <nav id="sign_out">
+                <div className={styleSignOut.container}>
+                    <nav id={styleSignOut.sign_out}>
                         <h2>Chat With Friends</h2>
                         <button type="submit" onClick={signOut}>Sign Out</button>
                     </nav>
-                    <ChatRoom user={user} db={db} />
-                </>
+                    <ChatRoom user={user} />
+                </div>
             ) : (
-                <section id="sign_in">
-                    <h1>Welcome to Chat Room</h1>
-                    <button type="submit" onClick={signInWithGoogle}>Sign In With Google</button>
-                </section>
+                <div className={styleSignIn.container}>
+                    <div className={styleSignIn.content}>
+                        <section id={styleSignIn.sign_in}>
+                            <h1>Welcome to Chat Room</h1>
+                            <button type="submit" onClick={signInWithGoogle}>Sign In With Google</button>
+                        </section>
+                    </div>
+                </div>
             )}
-        </div>
+        </>
     )
 }

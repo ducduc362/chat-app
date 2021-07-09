@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import firebase from "firebase";
 import ChatRoom from "./Components/ChatRoom";
 import { useRouter } from "next/dist/client/router";
-import { io } from 'socket.io-client';
 import styleSignIn from '../styles/SignIn.module.css';
 import styleSignOut from '../styles/SignOut.module.css';
+import { io } from 'socket.io-client';
 
-const socket = io("https://matchingapp05052000.herokuapp.com")
+const socket = io("https://5b21261bdf49.ngrok.io")
 
 if (!firebase.apps.length) {
     firebase.initializeApp({
@@ -48,10 +48,32 @@ const signOut = async () => {
     }
 };
 
+
 export default function Home() {
     const [user, setUser] = useState<any>(() => auth.currentUser);
 
     const router = useRouter();
+
+    const leaveRoom = () => {
+
+        const uid = window.localStorage.getItem('userID');
+        const room = window.localStorage.getItem('room')
+        const gender = window.localStorage.getItem('gender')
+
+        socket.emit('client-out-room', { userID: uid, roomID: room, gender: gender })
+
+        socket.on('server-out-room', (data) => {
+            console.log(data, 'check');
+            if (data == 'success') {
+                localStorage.removeItem('room');
+                router.push('/form');
+            }
+            else {
+                console.log(data);
+            }
+        });
+
+    }
 
     useEffect(() => {
         const iGender = window.localStorage.getItem('gender');
@@ -76,7 +98,10 @@ export default function Home() {
                 <div className={styleSignOut.container}>
                     <nav id={styleSignOut.sign_out}>
                         <h2>Chat With Friends</h2>
-                        <button type="submit" onClick={signOut}>Sign Out</button>
+                        <div>
+                            <button type="submit" id={styleSignOut.leave_room} onClick={leaveRoom} >Leave room</button>
+                            <button type="submit" onClick={signOut}>Sign Out</button>
+                        </div>
                     </nav>
                     <ChatRoom user={user} />
                 </div>

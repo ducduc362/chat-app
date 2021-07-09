@@ -1,7 +1,5 @@
 .container {
-  text-align: center;
-  margin: 0 auto;
-  max-width: 728px;
+  max-width: 100%;
 }
 
 /* sign out */
@@ -12,7 +10,6 @@
   color: white;
   position: fixed;
   width: 100%;
-  max-width: 728px;
   top: 0;
   display: flex;
   align-items: center;
@@ -38,4 +35,8 @@
 #sign_out button:hover {
   color: white;
   background-color: rgb(170, 43, 43);
+}
+
+#sign_out #leave_room {
+  margin: 0 5px;
 }

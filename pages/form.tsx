@@ -5,9 +5,10 @@ import { io } from 'socket.io-client';
 import { useRouter } from 'next/dist/client/router';
 import styled from 'styled-components';
 
-const socket = io("https://matchingapp05052000.herokuapp.com")
+const socket = io("https://5b21261bdf49.ngrok.io")
 
 socket.on('server-send-room', (data: string) => {
+    console.log(data, 'room');
     if (data) {
         window.localStorage.setItem('room', data);
     }
@@ -35,36 +36,36 @@ const Text = styled.h1`
     text-align: center;
 `
 
-const MyForm = styled(Form)`
-    width: 20%;
-`
-
 const Demo = () => {
     const [form] = Form.useForm();
 
     const router = useRouter();
 
+    const room = window.localStorage.getItem('room')
+
     const onFinish = (values: any) => {
-        const user = window.localStorage.getItem('email');
-        const room = window.localStorage.getItem('room')
+        const userID = window.localStorage.getItem('userID');
 
-        window.localStorage.setItem('gender', JSON.stringify(values.gender));
+        window.localStorage.setItem('gender', values.gender);
 
-        socket.emit("client-send-user", { userID: user, gender: values.gender })
+        const gender = window.localStorage.getItem('gender')
 
-        const hide = message.loading('Action in progress..', 0);
+        socket.emit("client-send-user", { userID: userID, gender: gender })
 
-        if (room == null) {
-            let search = setInterval(() => hide, 1000);
-        } else {
-            clearInterval(search);
-        }
+        socket.on('server-send-user', (user: object) => {
+            console.log(user, 'user');
+        })
 
-        let loadRoom = setInterval(() => socket.emit("client-get-room", user), 2000);
+        const hide = message.loading('Đang tìm phòng...', 0);
+
+        setTimeout(hide, 1000);
+
+        let loadRoom = setInterval(() => socket.emit("client-get-room", userID), 2000);
 
         if (room !== null) {
             clearInterval(loadRoom);
         }
+        console.log(room, 'here');
 
         router.push('/');
     };
@@ -73,30 +74,41 @@ const Demo = () => {
         <div className={styles.container}>
             <Text >Vui lòng chọn giới tính</Text>
             <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
-                <Form.Item
-                    name="gender"
-                    label="Gender"
-                    className={styles.selected}
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
-                >
-                    <Select
-                        placeholder="Select a option and change input text above"
-                        allowClear
-                    >
-                        <Option value="male">male</Option>
-                        <Option value="female">female</Option>
-                    </Select>
-                </Form.Item>
+                {room ? (
 
-                <Form.Item {...tailLayout} className={styles.selected} >
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                </Form.Item>
+                    <Form.Item {...tailLayout} className={styles.selected} >
+                        <Button type="primary" htmlType="submit">
+                            Tìm kiếm lại
+                        </Button>
+                    </Form.Item>
+
+                ) : (
+                    <>
+                        <Form.Item
+                            name="gender"
+                            label="Gender"
+                            className={styles.selected}
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
+                            <Select
+                                placeholder="Select a option and change input text above"
+                                allowClear
+                            >
+                                <Option value="male">male</Option>
+                                <Option value="female">female</Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item {...tailLayout} className={styles.selected} >
+                            <Button type="primary" htmlType="submit">
+                                Tìm kiếm
+                            </Button>
+                        </Form.Item>
+                    </ >
+                )}
             </Form >
         </div >
     );

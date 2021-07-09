@@ -1,8 +1,6 @@
 .content {
   background-color: #282c34;
-  /* text-align: center;
-  margin: 0 auto;
-  max-width: 728px; */
+  width: 100%;
 }
 
 /* chat */
@@ -29,16 +27,12 @@
 
 .chat_room li {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
+  justify-content: space-between;
 }
 
 .chat_room span {
   color: gray;
-}
-
-.chat_room img {
-  border-radius: 50%;
-  margin: 2px 5px;
 }
 
 /* form */
@@ -48,7 +42,6 @@
   position: fixed;
   bottom: 0;
   background-color: rgb(24, 23, 23);
-  max-width: 728px;
   display: flex;
   font-size: 1.5em;
 }

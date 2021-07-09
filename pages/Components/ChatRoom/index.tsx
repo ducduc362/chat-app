@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { io } from 'socket.io-client';
 import styles from '../../../styles/Chatroom.module.css';
 
-const socket = io("https://matchingapp05052000.herokuapp.com")
+const socket = io("https://5b21261bdf49.ngrok.io")
 
 type User = {
     uid: string,
@@ -31,7 +31,7 @@ export default function ChatRoom(props: AppProps) {
 
     const { uid } = user;
 
-    window.localStorage.setItem("email", user.email);
+    window.localStorage.setItem('userID', uid);
 
     const dummySpace = useRef<HTMLDivElement>(null);
 

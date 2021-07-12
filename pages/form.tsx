@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { Form, Button, Select, message } from 'antd';
 import 'antd/dist/antd.css';
 import { io } from 'socket.io-client';
@@ -66,6 +67,7 @@ const Demo = () => {
 
     useEffect(() => {
         const loadRoom = setInterval(() => {
+            // eslint-disable-next-line react-hooks/exhaustive-deps
             room = window.localStorage.getItem('room');
             if (room == null) {
                 room = "";

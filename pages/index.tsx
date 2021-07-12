@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/dist/client/router";
+import { io } from 'socket.io-client';
 import firebase from "firebase";
 import ChatRoom from "./Components/ChatRoom";
-import { useRouter } from "next/dist/client/router";
 import styleSignIn from '../styles/SignIn.module.css';
 import styleSignOut from '../styles/SignOut.module.css';
-import { io } from 'socket.io-client';
 
 const socket = io("https://matchingapp05052000.herokuapp.com/")
 
@@ -50,7 +50,8 @@ const signOut = async () => {
 
 
 export default function Home() {
-    const [user, setUser] = useState<any>(() => auth.currentUser);
+    const [user, setUser] = useState<firebase.User | null>
+        (() => auth.currentUser);
 
     const router = useRouter();
 
@@ -59,14 +60,15 @@ export default function Home() {
         const room = window.localStorage.getItem('room')
         const gender = window.localStorage.getItem('gender')
 
-        socket.emit('client-out-room', { userID: uid, roomID: room, gender: gender })
+        socket.emit('client-out-room', { userID: uid, roomID: room, gender })
 
         socket.on('server-out-room', (data) => {
-            if (data == 'success') {
+            if (data === 'success') {
                 localStorage.removeItem('room');
                 router.push('/form');
             }
             else {
+                // eslint-disable-next-line no-console
                 console.log(data);
             }
         });
@@ -88,7 +90,7 @@ export default function Home() {
             }
         })
 
-    }, []);
+    });
 
     return (
         <>

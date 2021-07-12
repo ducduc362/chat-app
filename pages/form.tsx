@@ -1,10 +1,10 @@
 import { Form, Button, Select, message } from 'antd';
 import 'antd/dist/antd.css';
-import styles from '../styles/Form.module.css';
 import { io } from 'socket.io-client';
 import { useRouter } from 'next/dist/client/router';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
+import styles from '../styles/Form.module.css';
 
 const socket = io("https://matchingapp05052000.herokuapp.com/")
 
@@ -37,6 +37,7 @@ const Text = styled.h1`
 `
 
 const Demo = () => {
+
     const [form] = Form.useForm();
 
     const router = useRouter();
@@ -47,29 +48,24 @@ const Demo = () => {
 
     let room = window.localStorage.getItem('room')
 
-    const onFinish = (values: any) => {
+    const onFinish = (values: { gender: string; }) => {
         const userID = window.localStorage.getItem('userID');
 
         window.localStorage.setItem('gender', values.gender);
 
         const gender = window.localStorage.getItem('gender')
 
-        socket.emit("client-send-user", { userID: userID, gender: gender })
+        socket.emit("client-send-user", { userID, gender })
 
-        socket.on('server-send-user', (user: object) => {
-            console.log(user, 'user');
-        })
+        socket.on('server-send-user', (user: object) => { })
 
         const hide = message.loading('Đang tìm phòng...', 0);
 
         setTimeout(hide, 1000);
-
     };
 
     useEffect(() => {
-        console.log('useE');
-
-        let loadRoom = setInterval(() => {
+        const loadRoom = setInterval(() => {
             room = window.localStorage.getItem('room');
             if (room == null) {
                 room = "";

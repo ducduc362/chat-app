@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { io } from 'socket.io-client';
 import styles from '../../../styles/Chatroom.module.css';
 
-const socket = io("https://5b21261bdf49.ngrok.io")
+const socket = io("https://matchingapp05052000.herokuapp.com/")
 
 type User = {
     uid: string,
@@ -38,6 +38,8 @@ export default function ChatRoom(props: AppProps) {
     const [newMessage, setNewMessage] = useState<string>("");
     const [messages, setMessages] = useState<ShowData[]>([]);
 
+    socket.emit('client-join-room', window.localStorage.getItem('room'));
+
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
 
@@ -48,14 +50,13 @@ export default function ChatRoom(props: AppProps) {
         setNewMessage("");
 
         dummySpace.current?.scrollIntoView({ behavior: "smooth" });
-    }
 
-    useEffect(() => {
+        console.log(window.localStorage.getItem('room'), 'test');
+
         socket.on('server-send-message', (data) => {
             setMessages(data)
         })
-
-    }, [])
+    }
 
     return (
         <div className={styles.content}>

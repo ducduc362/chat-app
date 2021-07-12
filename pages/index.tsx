@@ -6,7 +6,7 @@ import styleSignIn from '../styles/SignIn.module.css';
 import styleSignOut from '../styles/SignOut.module.css';
 import { io } from 'socket.io-client';
 
-const socket = io("https://5b21261bdf49.ngrok.io")
+const socket = io("https://matchingapp05052000.herokuapp.com/")
 
 if (!firebase.apps.length) {
     firebase.initializeApp({
@@ -55,7 +55,6 @@ export default function Home() {
     const router = useRouter();
 
     const leaveRoom = () => {
-
         const uid = window.localStorage.getItem('userID');
         const room = window.localStorage.getItem('room')
         const gender = window.localStorage.getItem('gender')
@@ -63,7 +62,6 @@ export default function Home() {
         socket.emit('client-out-room', { userID: uid, roomID: room, gender: gender })
 
         socket.on('server-out-room', (data) => {
-            console.log(data, 'check');
             if (data == 'success') {
                 localStorage.removeItem('room');
                 router.push('/form');

@@ -19,6 +19,11 @@
   box-sizing: border-box;
 }
 
+.divbutton {
+  display: flex;
+  flex-direction: row;
+}
+
 #sign_out button {
   background-color: #282c34;
   color: white;
@@ -37,6 +42,6 @@
   background-color: rgb(170, 43, 43);
 }
 
-#sign_out #leave_room {
+#leave_room {
   margin: 0 5px;
 }

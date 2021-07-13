@@ -5,37 +5,42 @@ import { io } from 'socket.io-client';
 import { useRouter } from 'next/dist/client/router';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import styles from '../styles/Form.module.css';
 
-const socket = io("https://matchingapp05052000.herokuapp.com/")
+const socket = io("https://realtimechatappbdh.herokuapp.com/")
 
 socket.on('server-send-room', (data: string) => {
     if (data) {
         window.localStorage.setItem('room', data);
     }
-})
+});
 
 const { Option } = Select;
-
-const layout = {
-    labelCol: {
-        span: 8,
-    },
-    wrapperCol: {
-        span: 16,
-    },
-};
-
-const tailLayout = {
-    wrapperCol: {
-        offset: 8,
-        span: 16,
-    },
-};
 
 const Text = styled.h1`
     text-align: center;
 `
+
+const Flexbox = styled.div`
+    font-family: sans-serif;
+    margin: 0 auto;
+    max-width: 728px;
+    text-align:center;
+`
+
+const Border = styled.div`
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    box-sizing: border-box;
+`
+
+const StyledButton = styled(Button)`
+    padding : 30px 30px;
+    span{
+        padding-bottom: 30px;
+    }
+`;
 
 const Demo = () => {
 
@@ -43,11 +48,11 @@ const Demo = () => {
 
     const router = useRouter();
 
-    const us = window.localStorage.getItem('userID');
-
     const [phong, setPhong] = useState("");
 
     let room = window.localStorage.getItem('room')
+    const us = window.localStorage.getItem('userID');
+    const iGender = window.localStorage.getItem('gender')
 
     const onFinish = (values: { gender: string; }) => {
         const userID = window.localStorage.getItem('userID');
@@ -82,68 +87,68 @@ const Demo = () => {
         return () => clearInterval(loadRoom);
     }, [phong]);
 
-    const iGender = window.localStorage.getItem('gender')
-
     return (
-        <div className={styles.container}>
-            <Text >Vui lòng chọn giới tính</Text>
-            <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
-                {iGender ? (
-                    <>
-                        <Form.Item
-                            name="gender"
-                            label="Gender"
-                            className={styles.selected}
-                            initialValue={iGender}
-                            hidden
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <Select
-                                placeholder="Select a option and change input text above"
-                                allowClear
-                            >
-                                <Option value="male">male</Option>
-                                <Option value="female">female</Option>
-                            </Select>
-                        </Form.Item>
-                        <Form.Item {...tailLayout} className={styles.selected} >
-                            <Button type="primary" htmlType="submit">
-                                Tìm kiếm lại
-                            </Button>
-                        </Form.Item>
-                    </>
-                ) : (
-                    <>
-                        <Form.Item
-                            name="gender"
-                            label="Gender"
-                            className={styles.selected}
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <Select
-                                placeholder="Select a option and change input text above"
-                                allowClear
-                            >
-                                <Option value="male">male</Option>
-                                <Option value="female">female</Option>
-                            </Select>
-                        </Form.Item>
-                        <Form.Item {...tailLayout} className={styles.selected} >
-                            <Button type="primary" htmlType="submit">
-                                Tìm kiếm
-                            </Button>
-                        </Form.Item>
-                    </ >
-                )}
-            </Form >
+        <div>
+            <Flexbox>
+                <Border>
+                    <Form form={form} name="control-hooks" onFinish={onFinish}>
+                        {iGender ? (
+                            <>
+                                <Form.Item
+                                    name="gender"
+                                    label="Gender"
+                                    initialValue={iGender}
+                                    hidden
+                                    rules={[
+                                        {
+                                            required: true,
+                                        },
+                                    ]}
+                                >
+                                    <Select
+                                        placeholder="Select a option and change input text above"
+                                        allowClear
+                                    >
+                                        <Option value="male">male</Option>
+                                        <Option value="female">female</Option>
+                                    </Select>
+                                </Form.Item>
+                                <Form.Item>
+                                    <StyledButton type="primary" htmlType="submit" >
+                                        Tìm kiếm lại
+                                    </StyledButton>
+                                </Form.Item>
+                            </>
+                        ) : (
+                            <>
+                                <Text>Vui lòng nhập giới tính</Text>
+                                <Form.Item
+                                    name="gender"
+                                    label="Gender"
+                                    rules={[
+                                        {
+                                            required: true,
+                                        },
+                                    ]}
+                                >
+                                    <Select
+                                        placeholder="Select a option and change input text above"
+                                        allowClear
+                                    >
+                                        <Option value="male">male</Option>
+                                        <Option value="female">female</Option>
+                                    </Select>
+                                </Form.Item>
+                                <Form.Item >
+                                    <Button type="primary" htmlType="submit">
+                                        Tìm kiếm
+                                    </Button>
+                                </Form.Item>
+                            </ >
+                        )}
+                    </Form>
+                </Border>
+            </Flexbox>
         </div >
     );
 };

@@ -6,7 +6,11 @@ import ChatRoom from "./Components/ChatRoom";
 import styleSignIn from '../styles/SignIn.module.css';
 import styleSignOut from '../styles/SignOut.module.css';
 
-const socket = io("https://matchingapp05052000.herokuapp.com/")
+type User = {
+    gender: string
+}
+
+const socket = io("https://realtimechatappbdh.herokuapp.com/")
 
 if (!firebase.apps.length) {
     firebase.initializeApp({
@@ -31,7 +35,17 @@ const signInWithGoogle = async () => {
     auth.useDeviceLanguage();
 
     try {
-        await auth.signInWithPopup(provider)
+        await auth.signInWithPopup(provider);
+
+        socket.emit('client-get-user', window.localStorage.getItem('userID'));
+
+        socket.on('server-send-user', (user: User) => {
+            if (typeof user.gender !== "undefined") {
+                window.localStorage.setItem('gender', user.gender);
+            }
+        });
+
+        // cái server send user của bạn mặc
     } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error);
@@ -72,7 +86,6 @@ export default function Home() {
                 console.log(data);
             }
         });
-
     }
 
     useEffect(() => {
@@ -95,16 +108,18 @@ export default function Home() {
     return (
         <>
             {user ? (
-                <div className={styleSignOut.container}>
-                    <nav id={styleSignOut.sign_out}>
-                        <h2>Chat With Friends</h2>
-                        <div>
-                            <button type="submit" id={styleSignOut.leave_room} onClick={leaveRoom} >Leave room</button>
-                            <button type="submit" onClick={signOut}>Sign Out</button>
-                        </div>
-                    </nav>
+                <>
+                    <div className={styleSignOut.container}>
+                        <nav id={styleSignOut.sign_out}>
+                            <h2>Chat With Friends</h2>
+                            <div className={styleSignOut.divbutton}>
+                                <button type="submit" id={styleSignOut.leave_room} onClick={leaveRoom} >Leave room</button>
+                                <button type="submit" onClick={signOut}>Sign Out</button>
+                            </div>
+                        </nav>
+                    </div>
                     <ChatRoom user={user} />
-                </div>
+                </>
             ) : (
                 <div className={styleSignIn.container}>
                     <div className={styleSignIn.content}>

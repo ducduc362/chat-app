@@ -1,8 +1,8 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { io } from 'socket.io-client';
 import styles from '../../../styles/Chatroom.module.css';
 
-const socket = io("https://matchingapp05052000.herokuapp.com/")
+const socket = io("https://realtimechatappbdh.herokuapp.com/");
 
 type User = {
     uid: string,
@@ -13,7 +13,7 @@ interface AppProps {
 }
 
 type Messages = {
-    uid: string,
+    userID: string,
     key: string,
     message: string
 }
@@ -30,7 +30,9 @@ export default function ChatRoom(props: AppProps) {
     const [newMessage, setNewMessage] = useState<string>("");
     const [messages, setMessages] = useState<Messages[]>([]);
 
-    socket.emit('client-join-room', window.localStorage.getItem('room'));
+    socket.on('server-send-message', (data) => {
+        setMessages(data)
+    })
 
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
@@ -42,23 +44,24 @@ export default function ChatRoom(props: AppProps) {
         setNewMessage("");
 
         dummySpace.current?.scrollIntoView({ behavior: "smooth" });
-
-        socket.on('server-send-message', (data) => {
-            setMessages(data)
-        })
     }
+
+    useEffect(() => {
+        socket.emit('client-join-room', window.localStorage.getItem('room'));
+
+        socket.emit('client-get-message-first', window.localStorage.getItem('room'));
+    }, [])
 
     return (
         <div className={styles.content}>
             <ul className={styles.chat_room}>
                 {messages.map((message) => (
-                    <li key={message.key} className={message.uid === uid ?
+                    <li key={message.key} className={message.userID === uid ?
                         styles.sent : styles.received} >
                         <p className={styles.text}>{message.message}</p>
                     </li>
                 ))}
             </ul>
-
             <section ref={dummySpace}>
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <input

@@ -102,10 +102,12 @@ export default function ChatRoom(props: AppProps) {
 
     const [messages, setMessages] = useState<Messages[]>([]);
 
+    const [room, setRoom] = useState<string>("");
+    console.log(room, 'room');
+
+
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
-
-        const room = window.localStorage.getItem('room');
 
         socket.emit("client-send-message", { userID: user.uid, roomID: room, message: newMessage })
 
@@ -115,6 +117,12 @@ export default function ChatRoom(props: AppProps) {
     }
 
     useEffect(() => {
+        const iRoom = window.localStorage.getItem('room');
+
+        if (iRoom) {
+            setRoom(iRoom);
+        }
+
         socket.emit('client-join-room', window.localStorage.getItem('room'));
 
         socket.emit('client-get-message-first', window.localStorage.getItem('room'));

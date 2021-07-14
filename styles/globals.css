@@ -2,3 +2,29 @@
   padding: 0;
   margin: 0;
 }
+
+.sent {
+  flex-direction: row-reverse;
+}
+
+p {
+  max-width: 500px;
+  margin-bottom: 12px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  position: relative;
+  color: white;
+  text-align: center;
+}
+
+.sent p {
+  color: white;
+  background: #0b93f6;
+  align-self: flex-end;
+  margin-right: 5px;
+}
+.received p {
+  background: #e5e5ea;
+  color: black;
+  margin-left: 5px;
+}

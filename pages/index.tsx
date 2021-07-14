@@ -120,7 +120,7 @@ export default function Home() {
                 </>
             ) : (
                 <div className={styleSignIn.container}>
-                    <div className={styleSignIn.content}>
+                    <div className={styleSignIn.nd}>
                         <section id={styleSignIn.sign_in}>
                             <h1>Welcome to Chat Room</h1>
                             <button type="submit" onClick={signInWithGoogle}>Sign In With Google</button>

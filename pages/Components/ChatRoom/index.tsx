@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect } from "react";
 import { io } from 'socket.io-client';
-import styles from '../../../styles/Chatroom.module.css';
 
 const socket = io("https://realtimechatappbdh.herokuapp.com/");
 
@@ -54,17 +53,17 @@ export default function ChatRoom(props: AppProps) {
     }, [])
 
     return (
-        <div className={styles.content}>
-            <ul className={styles.chat_room}>
+        <div className="content">
+            <ul className="chat_room">
                 {messages.map((message) => (
                     <li key={message.key} className={message.userID === uid ?
-                        styles.sent : styles.received} >
-                        <p className={styles.text}>{message.message}</p>
+                        "sent" : "received"} >
+                        <p>{message.message}</p>
                     </li>
                 ))}
             </ul>
             <section ref={dummySpace}>
-                <form className={styles.form} onSubmit={handleSubmit}>
+                <form id="chat_form" onSubmit={handleSubmit}>
                     <input
                         type="text"
                         value={newMessage}

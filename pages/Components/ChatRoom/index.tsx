@@ -132,7 +132,7 @@ export default function ChatRoom(props: AppProps) {
                 {messages.map((message) => (
                     <li key={message.key} className={message.userID === uid ?
                         'sent' : 'received'} >
-                        <p className={styles.text}>{message.message}</p>
+                        <p >{message.message}</p>
                     </li>
                 ))}
             </Chatroom>

@@ -16,10 +16,6 @@ socket.on('server-send-room', (data: string) => {
 
 const { Option } = Select;
 
-const Text = styled.h1`
-    text-align: center;
-`
-
 const Flexbox = styled.div`
     font-family: sans-serif;
     text-align: center;
@@ -46,10 +42,8 @@ const Demo = () => {
     const router = useRouter();
 
     const [phong, setPhong] = useState("");
-
-    const iGender = window.localStorage.getItem('gender');
-    let room = window.localStorage.getItem('room');
-    const us = window.localStorage.getItem('userID')
+    const [gioitinh, setGioitinh] = useState(null);
+    console.log(gioitinh, 'gt');
 
     const onFinish = (values: { gender: string; }) => {
         const userID = window.localStorage.getItem('userID');
@@ -68,6 +62,10 @@ const Demo = () => {
     };
 
     useEffect(() => {
+        let room = window.localStorage.getItem('room');
+        const us = window.localStorage.getItem('userID');
+        const gt = window.localStorage.getItem('gender');
+        setGioitinh(gt);
         const loadRoom = setInterval(() => {
             // eslint-disable-next-line react-hooks/exhaustive-deps
             room = window.localStorage.getItem('room');
@@ -75,6 +73,7 @@ const Demo = () => {
                 room = "";
             }
             setPhong(room);
+
             socket.emit("client-get-room", us);
         }, 2000);
 
@@ -89,12 +88,12 @@ const Demo = () => {
             <Flexbox>
                 <Border>
                     <Form form={form} name="control-hooks" onFinish={onFinish}>
-                        {iGender ? (
+                        {gioitinh ? (
                             <>
                                 <Form.Item
                                     name="gender"
                                     label="Gender"
-                                    initialValue={iGender}
+                                    initialValue={gioitinh}
                                     hidden
                                     rules={[
                                         {
@@ -118,7 +117,7 @@ const Demo = () => {
                             </>
                         ) : (
                             <>
-                                <Text>Vui lòng nhập giới tính</Text>
+                                <h1>Vui lòng nhập giới tính</h1>
                                 <Form.Item
                                     name="gender"
                                     label="Gender"

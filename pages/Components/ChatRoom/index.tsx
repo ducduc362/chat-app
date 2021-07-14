@@ -96,7 +96,9 @@ export default function ChatRoom(props: AppProps) {
 
     const { uid } = user;
 
-    window.localStorage.setItem('userID', uid);
+    if (uid) {
+        window.localStorage.setItem('userID', uid);
+    }
 
     const dummySpace = useRef<HTMLInputElement>(null);
 

@@ -94,8 +94,6 @@ const Chatform = styled.form`
 export default function ChatRoom(props: AppProps) {
     const { user } = props;
 
-    window.localStorage.setItem('userID', user.uid);
-
     const dummySpace = useRef<HTMLInputElement>(null);
 
     const [newMessage, setNewMessage] = useState<string>("");
@@ -117,6 +115,8 @@ export default function ChatRoom(props: AppProps) {
     useEffect(() => {
         const iRoom = window.localStorage.getItem('room');
 
+        window.localStorage.setItem('userID', user.uid);
+
         if (iRoom) {
             setRoom(iRoom);
         }
@@ -129,7 +129,7 @@ export default function ChatRoom(props: AppProps) {
             setMessages(data)
         })
 
-    }, [])
+    }, [user.uid])
 
     return (
         <Content>

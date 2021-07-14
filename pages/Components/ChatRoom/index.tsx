@@ -94,11 +94,7 @@ const Chatform = styled.form`
 export default function ChatRoom(props: AppProps) {
     const { user } = props;
 
-    const { uid } = user;
-
-    if (uid) {
-        window.localStorage.setItem('userID', uid);
-    }
+    window.localStorage.setItem('userID', user.uid);
 
     const dummySpace = useRef<HTMLInputElement>(null);
 
@@ -111,7 +107,7 @@ export default function ChatRoom(props: AppProps) {
 
         const room = window.localStorage.getItem('room');
 
-        socket.emit("client-send-message", { userID: uid, roomID: room, message: newMessage })
+        socket.emit("client-send-message", { userID: user.uid, roomID: room, message: newMessage })
 
         setNewMessage("");
 
@@ -126,14 +122,16 @@ export default function ChatRoom(props: AppProps) {
         socket.on('server-send-message', (data) => {
             setMessages(data)
         })
+
     }, [])
 
     return (
         <Content>
             <Chatroom>
                 {messages.map((message) => (
-                    <li key={message.key} className={message.userID === uid ?
-                        'sent' : 'received'} >
+                    <li key={message.key}
+                        className={message.userID === user.uid ? 'sent' : 'received'}
+                    >
                         <p>{message.message}</p>
                     </li>
                 ))}

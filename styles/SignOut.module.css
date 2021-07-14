@@ -27,7 +27,7 @@
 #sign_out button {
   background-color: #282c34;
   color: white;
-  padding: 15px 32px;
+  padding: 13px 30px;
   text-align: center;
   text-decoration: none;
   border: none;
@@ -44,4 +44,8 @@
 
 #leave_room {
   margin: 0 5px;
+}
+
+#sign_out h2 {
+  font-size: 1.5em;
 }

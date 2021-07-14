@@ -1,0 +1,97 @@
+.content {
+  background-color: #282c34;
+  max-width: 100%;
+}
+
+.chat_room {
+  padding: 10px;
+  min-height: 80vh;
+  margin: 10vh 0;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat_room::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+.chat_room::-webkit-scrollbar-track {
+  background: #1e1e24;
+}
+
+.chat_room::-webkit-scrollbar-thumb {
+  background: #6649b8;
+}
+
+.chat_room li {
+  display: flex;
+  align-items: center;
+}
+
+.chat_room span {
+  color: gray;
+}
+
+.form {
+  height: 10vh;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  background-color: rgb(24, 23, 23);
+  display: flex;
+  font-size: 1.5em;
+}
+
+.form input {
+  line-height: 1.5;
+  width: 80%;
+  font-size: 1.5rem;
+  background: rgb(58, 58, 58);
+  color: white;
+  outline: none;
+  border: none;
+  padding: 0 10px;
+}
+
+.form button {
+  width: 20%;
+  background-color: rgb(56, 56, 143);
+  color: white;
+  cursor: pointer;
+  font-size: 1.25rem;
+  display: inline-block;
+  border: none;
+  text-align: center;
+}
+
+.form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sent {
+  flex-direction: row-reverse;
+}
+
+.text {
+  max-width: 500px;
+  margin-bottom: 12px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  position: relative;
+  color: white;
+  text-align: center;
+}
+
+.sent .text {
+  color: white;
+  background: #0b93f6;
+  align-self: flex-end;
+  margin-right: 5px;
+}
+.received .text {
+  background: #e5e5ea;
+  color: black;
+  margin-left: 5px;
+}

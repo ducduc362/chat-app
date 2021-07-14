@@ -47,9 +47,7 @@ const Demo = () => {
 
     const [phong, setPhong] = useState("");
 
-    let room = window.localStorage.getItem('room')
-    const us = window.localStorage.getItem('userID');
-    const iGender = window.localStorage.getItem('gender')
+    const iGender = window.localStorage.getItem('gender');
 
     const onFinish = (values: { gender: string; }) => {
         const userID = window.localStorage.getItem('userID');
@@ -68,6 +66,8 @@ const Demo = () => {
     };
 
     useEffect(() => {
+        let room = window.localStorage.getItem('room');
+        const us = window.localStorage.getItem('userID')
         const loadRoom = setInterval(() => {
             // eslint-disable-next-line react-hooks/exhaustive-deps
             room = window.localStorage.getItem('room');

@@ -105,7 +105,7 @@ export default function ChatRoom(props: AppProps) {
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
 
-        socket.emit("client-send-message", { userID: user.uid, roomID: room, message: newMessage })
+        socket.emit("client-send-message", { userID: user?.uid, roomID: room, message: newMessage })
 
         setNewMessage("");
 
@@ -115,7 +115,7 @@ export default function ChatRoom(props: AppProps) {
     useEffect(() => {
         const iRoom = window.localStorage.getItem('room');
 
-        window.localStorage.setItem('userID', user.uid);
+        window.localStorage.setItem('userID', user?.uid);
 
         if (iRoom) {
             setRoom(iRoom);
@@ -129,14 +129,14 @@ export default function ChatRoom(props: AppProps) {
             setMessages(data)
         })
 
-    }, [user.uid])
+    }, [user?.uid])
 
     return (
         <Content>
             <Chatroom>
                 {messages.map((message) => (
                     <li key={message.key}
-                        className={message.userID === user.uid ? 'sent' : 'received'}
+                        className={message.userID === user?.uid ? 'sent' : 'received'}
                     >
                         <p>{message.message}</p>
                     </li>

@@ -42,8 +42,7 @@ const Demo = () => {
     const router = useRouter();
 
     const [phong, setPhong] = useState("");
-    const [gioitinh, setGioitinh] = useState(null);
-    console.log(gioitinh, 'gt');
+    const [gioitinh, setGioitinh] = useState("");
 
     const onFinish = (values: { gender: string; }) => {
         const userID = window.localStorage.getItem('userID');
@@ -65,7 +64,7 @@ const Demo = () => {
         let room = window.localStorage.getItem('room');
         const us = window.localStorage.getItem('userID');
         const gt = window.localStorage.getItem('gender');
-        setGioitinh(gt);
+
         const loadRoom = setInterval(() => {
             // eslint-disable-next-line react-hooks/exhaustive-deps
             room = window.localStorage.getItem('room');
@@ -77,11 +76,15 @@ const Demo = () => {
             socket.emit("client-get-room", us);
         }, 2000);
 
+        if (gt !== null) {
+            setGioitinh(gt);
+        }
+
         if (phong !== "") {
             router.push('/');
         }
         return () => clearInterval(loadRoom);
-    }, [phong]);
+    }, [phong, router]);
 
     return (
         <div>

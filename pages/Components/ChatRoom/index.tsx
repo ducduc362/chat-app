@@ -103,8 +103,6 @@ export default function ChatRoom(props: AppProps) {
     const [messages, setMessages] = useState<Messages[]>([]);
 
     const [room, setRoom] = useState<string>("");
-    console.log(room, 'room');
-
 
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();

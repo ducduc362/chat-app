@@ -25,14 +25,11 @@ export default function ChatRoom(props: AppProps) {
 
     window.localStorage.setItem('userID', uid);
 
-    const dummySpace = useRef<HTMLDivElement>(null);
+    const dummySpace = useRef<HTMLInputElement>(null);
 
     const [newMessage, setNewMessage] = useState<string>("");
-    const [messages, setMessages] = useState<Messages[]>([]);
 
-    socket.on('server-send-message', (data) => {
-        setMessages(data)
-    })
+    const [messages, setMessages] = useState<Messages[]>([]);
 
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
@@ -43,13 +40,17 @@ export default function ChatRoom(props: AppProps) {
 
         setNewMessage("");
 
-        dummySpace.current?.scrollIntoView({ behavior: "smooth" });
+        dummySpace.current?.scrollIntoView({ block: 'end', behavior: "smooth" });
     }
 
     useEffect(() => {
         socket.emit('client-join-room', window.localStorage.getItem('room'));
 
         socket.emit('client-get-message-first', window.localStorage.getItem('room'));
+
+        socket.on('server-send-message', (data) => {
+            setMessages(data)
+        })
     }, [])
 
     return (

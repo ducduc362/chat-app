@@ -22,24 +22,21 @@ const Text = styled.h1`
 
 const Flexbox = styled.div`
     font-family: sans-serif;
-    margin: 0 auto;
+    text-align: center;
     max-width: 728px;
-    text-align:center;
+    margin: 0 auto;
 `
 
 const Border = styled.div`
-    flex-direction: column;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     height: 100vh;
-    box-sizing: border-box;
+    padding: 10%;
 `
 
 const StyledButton = styled(Button)`
-    padding : 30px 30px;
-    span{
-        padding-bottom: 30px;
-    }
+    height: 45px;
 `;
 
 const Demo = () => {

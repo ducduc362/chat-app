@@ -1,13 +1,13 @@
 .content {
   background-color: #282c34;
-  width: 100%;
+  max-width: 100%;
 }
 
 /* chat */
 .chat_room {
   padding: 10px;
-  height: 80vh;
-  margin: 10vh 0 10vh;
+  /* height: 80vh; */
+  margin: 10vh 0;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
@@ -28,7 +28,6 @@
 .chat_room li {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .chat_room span {
@@ -66,8 +65,6 @@
   display: inline-block;
   border: none;
   text-align: center;
-  text-decoration: none;
-  padding: 15px 32px;
 }
 
 .form button:disabled {
@@ -84,10 +81,9 @@
 .text {
   max-width: 500px;
   margin-bottom: 12px;
-  line-height: 24px;
   padding: 10px 20px;
   border-radius: 25px;
-  /* position: relative; */
+  position: relative;
   color: white;
   text-align: center;
 }

@@ -44,8 +44,6 @@ const signInWithGoogle = async () => {
                 window.localStorage.setItem('gender', user.gender);
             }
         });
-
-        // cái server send user của bạn mặc
     } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error);

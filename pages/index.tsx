@@ -14,6 +14,7 @@ type User = {
 const Container = styled.body`
     background-color: rgb(40, 44, 52);
     width: 100%;
+    height: 100vh;
 `
 
 const socket = io("https://realtimechatappbdh.herokuapp.com/")
@@ -110,7 +111,7 @@ export default function Home() {
     });
 
     return (
-        <Container>
+        <>
             {user ? (
                 <>
                     <div className={styleSignOut.container}>
@@ -122,7 +123,9 @@ export default function Home() {
                             </div>
                         </nav>
                     </div>
-                    <ChatRoom user={user} />
+                    <Container>
+                        <ChatRoom user={user} />
+                    </Container>
                 </>
             ) : (
                 <div className={styleSignIn.container}>
@@ -134,6 +137,6 @@ export default function Home() {
                     </div>
                 </div>
             )}
-        </Container>
+        </>
     )
 }

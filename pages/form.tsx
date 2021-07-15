@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import { Form, Button, Select, message } from 'antd';
+import { Form, Button, Select, message, Radio } from 'antd';
 import 'antd/dist/antd.css';
 import { io } from 'socket.io-client';
 import { useRouter } from 'next/dist/client/router';
@@ -44,6 +43,7 @@ const Demo = () => {
     const [gioitinh, setGioitinh] = useState("");
 
     const onFinish = (values: { gender: string; }) => {
+
         const userID = window.localStorage.getItem('userID');
 
         window.localStorage.setItem('gender', values.gender);
@@ -118,23 +118,19 @@ const Demo = () => {
                             </>
                         ) : (
                             <>
-                                <h1>Vui lòng nhập giới tính</h1>
+                                <h1>Vui lòng chọn giới tính</h1>
                                 <Form.Item
                                     name="gender"
-                                    label="Gender"
                                     rules={[
                                         {
                                             required: true,
                                         },
                                     ]}
                                 >
-                                    <Select
-                                        placeholder="Select a option and change input text above"
-                                        allowClear
-                                    >
-                                        <Option value="male">male</Option>
-                                        <Option value="female">female</Option>
-                                    </Select>
+                                    <Radio.Group>
+                                        <Radio value="male">Male</Radio>
+                                        <Radio value="female">Female </Radio>
+                                    </Radio.Group>
                                 </Form.Item>
                                 <Form.Item >
                                     <Button type="primary" htmlType="submit">

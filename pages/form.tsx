@@ -78,7 +78,7 @@ const Demo = () => {
             setGioitinh(gt);
         }
 
-        if (phong !== "" && gt !== null) {
+        if (phong !== "") {
             router.push('/');
         }
         return () => clearInterval(loadRoom);

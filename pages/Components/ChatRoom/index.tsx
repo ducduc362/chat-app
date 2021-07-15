@@ -18,11 +18,6 @@ type Messages = {
     message: string
 }
 
-const Container = styled.div`
-    background-color: rgb(40, 44, 52);
-    width: 100%;
-`
-
 const Content = styled.div`
     max-width: 728px;
     margin: 0 auto;

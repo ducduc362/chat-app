@@ -11,7 +11,7 @@ type User = {
     gender: string
 }
 
-const Container = styled.body`
+const Container = styled.div`
     background-color: rgb(40, 44, 52);
     width: 100%;
     height: 100vh;

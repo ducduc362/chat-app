@@ -18,26 +18,19 @@ type Messages = {
     message: string
 }
 
-const Content = styled.div`
+const Container = styled.main`
     max-width: 728px;
     margin: 0 auto;
+    text-align: center;
 `
-const Chatroom = styled.ul`
+
+const Content = styled.div`
     padding: 10px;
     min-height: 85vh;
-    margin: 10vh 0;
+    margin: 10vh 0 5vh 0;
     overflow-y: hidden;
     display: flex;
     flex-direction: column;
-
-    li{
-        display: flex;
-        align-items: center;
-    }
-
-    span{
-        color: gray;
-    }
 
     &::-webkit-scrollbar {
         width: 0.25rem;
@@ -50,6 +43,17 @@ const Chatroom = styled.ul`
       
     &::-webkit-scrollbar-thumb {
         background: #6649b8;
+    }
+`
+
+const Chatroom = styled.ul`
+    li{
+        display: flex;
+        align-items: center;
+    }
+
+    span{
+        color: gray;
     }
 `
 
@@ -82,6 +86,7 @@ const Chatform = styled.form`
         background-color: rgb(56, 56, 143);
         color: white;
         cursor: pointer;
+        padding: 5px 10px;
         font-size: 1.25rem;
         display: inline-block;
         border: none;
@@ -139,16 +144,18 @@ export default function ChatRoom(props: AppProps) {
     }, [user?.uid])
 
     return (
-        <Content>
-            <Chatroom>
-                {messages.map((message) => (
-                    <li key={message.key}
-                        className={message.userID === user?.uid ? 'sent' : 'received'}
-                    >
-                        <p>{message.message}</p>
-                    </li>
-                ))}
-            </Chatroom>
+        <Container>
+            <Content>
+                <Chatroom>
+                    {messages.map((message) => (
+                        <li key={message.key}
+                            className={message.userID === user?.uid ? 'sent' : 'received'}
+                        >
+                            <p>{message.message}</p>
+                        </li>
+                    ))}
+                </Chatroom>
+            </Content>
             <section ref={dummySpace}>
                 <Chatform onSubmit={handleSubmit}>
                     <input
@@ -162,6 +169,6 @@ export default function ChatRoom(props: AppProps) {
                     </button>
                 </Chatform>
             </section>
-        </Content>
+        </Container >
     )
 }

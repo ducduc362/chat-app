@@ -14,6 +14,7 @@ type User = {
 const Container = styled.div`
     background-color: rgb(40, 44, 52);
     width: 100%;
+    height: 100vh;
     overflow: auto;
 `
 
@@ -43,14 +44,6 @@ const signInWithGoogle = async () => {
 
     try {
         await auth.signInWithPopup(provider);
-
-        socket.emit('client-get-user', window.localStorage.getItem('userID'));
-
-        socket.on('server-send-user', (user: User) => {
-            if (typeof user.gender !== "undefined") {
-                window.localStorage.setItem('gender', user.gender);
-            }
-        });
     } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error);
@@ -96,8 +89,16 @@ export default function Home() {
     useEffect(() => {
         const iGender = window.localStorage.getItem('gender');
 
-        auth.onAuthStateChanged(async (iUser) => {
-            if (await iUser && iGender) {
+        socket.emit('client-get-user', window.localStorage.getItem('userID'));
+
+        socket.on('server-send-user', (data: User) => {
+            if (typeof data.gender !== "undefined") {
+                window.localStorage.setItem('gender', data.gender);
+            }
+        });
+
+        auth.onAuthStateChanged((iUser) => {
+            if (iUser && iGender) {
                 setUser(iUser);
             } else if (iUser && iGender == null) {
                 setUser(iUser);

@@ -43,7 +43,6 @@ const Demo = () => {
     const [gioitinh, setGioitinh] = useState("");
 
     const onFinish = (values: { gender: string; }) => {
-
         const userID = window.localStorage.getItem('userID');
 
         window.localStorage.setItem('gender', values.gender);
@@ -51,8 +50,6 @@ const Demo = () => {
         const gender = window.localStorage.getItem('gender')
 
         socket.emit("client-send-user", { userID, gender })
-
-        socket.on('server-send-user', (user: object) => { })
 
         const hide = message.loading('Đang tìm phòng...', 0);
 
@@ -72,7 +69,7 @@ const Demo = () => {
             setPhong(room);
 
             socket.emit("client-get-room", us);
-        }, 2000);
+        }, 500);
 
         if (gt !== null) {
             setGioitinh(gt);
@@ -81,6 +78,7 @@ const Demo = () => {
         if (phong !== "") {
             router.push('/');
         }
+
         return () => clearInterval(loadRoom);
     }, [phong, router]);
 

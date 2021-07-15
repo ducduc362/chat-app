@@ -18,6 +18,11 @@ type Messages = {
     message: string
 }
 
+const Container = styled.div`
+    background-color: rgb(40, 44, 52);
+    width: 100%;
+`
+
 const Content = styled.div`
     max-width: 728px;
     margin: 0 auto;
@@ -139,29 +144,31 @@ export default function ChatRoom(props: AppProps) {
     }, [user?.uid])
 
     return (
-        <Content>
-            <Chatroom>
-                {messages.map((message) => (
-                    <li key={message.key}
-                        className={message.userID === user?.uid ? 'sent' : 'received'}
-                    >
-                        <p>{message.message}</p>
-                    </li>
-                ))}
-            </Chatroom>
-            <section ref={dummySpace}>
-                <Chatform onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        placeholder="Type your message here..."
-                    />
-                    <button type="submit" disabled={!newMessage?.trim()}>
-                        Send
-                    </button>
-                </Chatform>
-            </section>
-        </Content>
+        <Container>
+            <Content>
+                <Chatroom>
+                    {messages.map((message) => (
+                        <li key={message.key}
+                            className={message.userID === user?.uid ? 'sent' : 'received'}
+                        >
+                            <p>{message.message}</p>
+                        </li>
+                    ))}
+                </Chatroom>
+                <section ref={dummySpace}>
+                    <Chatform onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                            placeholder="Type your message here..."
+                        />
+                        <button type="submit" disabled={!newMessage?.trim()}>
+                            Send
+                        </button>
+                    </Chatform>
+                </section>
+            </Content>
+        </Container>
     )
 }

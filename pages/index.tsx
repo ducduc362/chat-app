@@ -14,6 +14,7 @@ type User = {
 const Container = styled.div`
     background-color: rgb(40, 44, 52);
     width: 100%;
+    height: 100vh;
 `
 
 const socket = io("https://realtimechatappbdh.herokuapp.com/")

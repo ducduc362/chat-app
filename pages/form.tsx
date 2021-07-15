@@ -74,8 +74,11 @@ const Demo = () => {
             socket.emit("client-get-room", us);
         }, 2000);
 
-        if (phong !== "" && gt !== null) {
+        if (gt !== null) {
             setGioitinh(gt);
+        }
+
+        if (phong !== "" && gt !== null) {
             router.push('/');
         }
         return () => clearInterval(loadRoom);

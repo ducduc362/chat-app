@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import { io } from 'socket.io-client';
 import firebase from "firebase";
+import styled from "styled-components";
 import ChatRoom from "./Components/ChatRoom";
 import styleSignIn from '../styles/SignIn.module.css';
 import styleSignOut from '../styles/SignOut.module.css';
@@ -9,6 +10,11 @@ import styleSignOut from '../styles/SignOut.module.css';
 type User = {
     gender: string
 }
+
+const Container = styled.div`
+    background-color: rgb(40, 44, 52);
+    width: 100%;
+`
 
 const socket = io("https://realtimechatappbdh.herokuapp.com/")
 
@@ -104,7 +110,7 @@ export default function Home() {
     });
 
     return (
-        <>
+        <Container>
             {user ? (
                 <>
                     <div className={styleSignOut.container}>
@@ -128,6 +134,6 @@ export default function Home() {
                     </div>
                 </div>
             )}
-        </>
+        </Container>
     )
 }

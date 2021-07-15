@@ -65,7 +65,6 @@ const Demo = () => {
         const gt = window.localStorage.getItem('gender');
 
         const loadRoom = setInterval(() => {
-            // eslint-disable-next-line react-hooks/exhaustive-deps
             room = window.localStorage.getItem('room');
             if (room == null) {
                 room = "";

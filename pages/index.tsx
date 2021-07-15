@@ -89,8 +89,8 @@ export default function Home() {
     useEffect(() => {
         const iGender = window.localStorage.getItem('gender');
 
-        auth.onAuthStateChanged((iUser) => {
-            if (iUser && iGender) {
+        auth.onAuthStateChanged(async (iUser) => {
+            if (await iUser && iGender) {
                 setUser(iUser);
             } else if (iUser && iGender == null) {
                 setUser(iUser);

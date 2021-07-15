@@ -19,14 +19,14 @@ type Messages = {
 }
 
 const Content = styled.div`
-    background-color: #282c34;
-    max-width: 100%;
+    max-width: 728px;
+    margin: 0 auto;
 `
 const Chatroom = styled.ul`
     padding: 10px;
-    min-height: 80vh;
+    min-height: 85vh;
     margin: 10vh 0;
-    overflow-y: scroll;
+    overflow-y: hidden;
     display: flex;
     flex-direction: column;
 
@@ -41,6 +41,7 @@ const Chatroom = styled.ul`
 
     &::-webkit-scrollbar {
         width: 0.25rem;
+        background: transparent;
     }
       
     &::-webkit-scrollbar-track {
@@ -53,23 +54,27 @@ const Chatroom = styled.ul`
 `
 
 const Chatform = styled.form`
-    height: 10vh;
+    max-width: 728px;
+    background: rgb(58, 58, 58);
+    border-radius: 50px;
+    height: 5vh;
     width: 100%;
     position: fixed;
     bottom: 0;
-    background-color: rgb(24, 23, 23);
     display: flex;
     font-size: 1.5em;
 
     input{
         line-height: 1.5;
-        width: 80%;
+        width: 100%;
         font-size: 1.5rem;
         background: rgb(58, 58, 58);
         color: white;
         outline: none;
         border: none;
         padding: 0 10px;
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
     }
 
     button {
@@ -81,6 +86,8 @@ const Chatform = styled.form`
         display: inline-block;
         border: none;
         text-align: center;
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
     }
 
     button:disabled {

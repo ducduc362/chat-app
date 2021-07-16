@@ -1,8 +1,9 @@
 import { useRef, useState, useEffect } from "react";
+import { message } from "antd";
 import { io } from 'socket.io-client';
 import styled from 'styled-components';
 
-const socket = io("https://realtimechatappbdh.herokuapp.com/");
+const socket = io("https://localchatappbdh.herokuapp.com/");
 
 type User = {
     uid: string,
@@ -99,8 +100,6 @@ const Chatform = styled.form`
         opacity: 0.5;
         cursor: not-allowed;
     }
-
-    
 `
 
 export default function ChatRoom(props: AppProps) {
@@ -114,6 +113,19 @@ export default function ChatRoom(props: AppProps) {
 
     const [room, setRoom] = useState<string>("");
 
+    const male = () => {
+        message.error('Bạn nữ cùng phòng đã thoát phòng!');
+    };
+
+    const female = () => {
+        message.error('Bạn nam cùng phòng đã thoát phòng!');
+    };
+
+    const focusInput = () => {
+        const gender = window.localStorage.getItem('gender')
+        socket.emit("client-user-is-typing", { roomID: room, gender })
+    }
+
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
 
@@ -126,12 +138,23 @@ export default function ChatRoom(props: AppProps) {
 
     useEffect(() => {
         const iRoom = window.localStorage.getItem('room');
+        const gender = window.localStorage.getItem('gender');
 
         window.localStorage.setItem('userID', user?.uid);
 
         if (iRoom) {
             setRoom(iRoom);
         }
+
+        socket.on('server-has-user-out', (data) => {
+            console.log(data, 'here');
+            if (gender === "male") {
+                male();
+            }
+            else {
+                female();
+            }
+        })
 
         socket.emit('client-join-room', window.localStorage.getItem('room'));
 
@@ -147,11 +170,11 @@ export default function ChatRoom(props: AppProps) {
         <Container>
             <Content>
                 <Chatroom>
-                    {messages.map((message) => (
-                        <li key={message.key}
-                            className={message.userID === user?.uid ? 'sent' : 'received'}
+                    {messages.map((eachmessage) => (
+                        <li key={eachmessage.key}
+                            className={eachmessage.userID === user?.uid ? 'sent' : 'received'}
                         >
-                            <p>{message.message}</p>
+                            <p>{eachmessage.message}</p>
                         </li>
                     ))}
                 </Chatroom>
@@ -161,6 +184,7 @@ export default function ChatRoom(props: AppProps) {
                     <input
                         type="text"
                         value={newMessage}
+                        onFocus={focusInput}
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder="Type your message here..."
                     />

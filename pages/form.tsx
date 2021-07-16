@@ -5,7 +5,7 @@ import { useRouter } from 'next/dist/client/router';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 
-const socket = io("https://realtimechatappbdh.herokuapp.com/")
+const socket = io("https://localchatappbdh.herokuapp.com/")
 
 socket.on('server-send-room', (data: string) => {
     if (data) {
@@ -42,6 +42,11 @@ const Demo = () => {
     const [phong, setPhong] = useState("");
     const [gioitinh, setGioitinh] = useState("");
 
+    const success = async () => {
+        message.destroy()
+        await message.success('Tìm phòng thành công', 2);
+    };
+
     const onFinish = (values: { gender: string; }) => {
         const userID = window.localStorage.getItem('userID');
 
@@ -51,9 +56,7 @@ const Demo = () => {
 
         socket.emit("client-send-user", { userID, gender })
 
-        const hide = message.loading('Đang tìm phòng...', 0);
-
-        setTimeout(hide, 1000);
+        message.loading('Đang tìm phòng...', 0)
     };
 
     useEffect(() => {
@@ -77,6 +80,7 @@ const Demo = () => {
 
         if (phong !== "") {
             router.push('/');
+            success();
         }
 
         return () => clearInterval(loadRoom);
@@ -109,7 +113,7 @@ const Demo = () => {
                                     </Select>
                                 </Form.Item>
                                 <Form.Item>
-                                    <StyledButton type="primary" htmlType="submit" >
+                                    <StyledButton type="primary" htmlType="submit">
                                         Tìm kiếm lại
                                     </StyledButton>
                                 </Form.Item>
@@ -127,7 +131,7 @@ const Demo = () => {
                                 >
                                     <Radio.Group>
                                         <Radio value="male">Male</Radio>
-                                        <Radio value="female">Female </Radio>
+                                        <Radio value="female" checked>Female </Radio>
                                     </Radio.Group>
                                 </Form.Item>
                                 <Form.Item >

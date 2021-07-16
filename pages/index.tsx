@@ -18,7 +18,7 @@ const Container = styled.div`
     overflow: auto;
 `
 
-const socket = io("https://realtimechatappbdh.herokuapp.com/")
+const socket = io("https://localchatappbdh.herokuapp.com/")
 
 if (!firebase.apps.length) {
     firebase.initializeApp({
@@ -74,16 +74,6 @@ export default function Home() {
 
         socket.emit('client-out-room', { userID: uid, roomID: room, gender })
 
-        socket.on('server-out-room', (data) => {
-            if (data === 'success') {
-                localStorage.removeItem('room');
-                router.push('/form');
-            }
-            else {
-                // eslint-disable-next-line no-console
-                console.log(data);
-            }
-        });
     }
 
     useEffect(() => {
@@ -94,6 +84,17 @@ export default function Home() {
         socket.on('server-send-user', (data: User) => {
             if (typeof data.gender !== "undefined") {
                 window.localStorage.setItem('gender', data.gender);
+            }
+        });
+
+        socket.on('server-out-room', (data) => {
+            if (data === 'success') {
+                localStorage.removeItem('room');
+                router.push('/form');
+            }
+            else {
+                // eslint-disable-next-line no-console
+                console.log(data);
             }
         });
 

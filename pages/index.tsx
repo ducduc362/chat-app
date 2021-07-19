@@ -18,7 +18,7 @@ const Container = styled.div`
     overflow: auto;
 `
 
-const socket = io("https://localchatappbdh.herokuapp.com/")
+const socket = io("https://44dd0e22ec55.ngrok.io")
 
 if (!firebase.apps.length) {
     firebase.initializeApp({
@@ -110,7 +110,7 @@ export default function Home() {
             }
         })
 
-    });
+    }, [router]);
 
     return (
         <>

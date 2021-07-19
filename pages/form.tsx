@@ -5,7 +5,7 @@ import { useRouter } from 'next/dist/client/router';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 
-const socket = io("https://localchatappbdh.herokuapp.com/")
+const socket = io("https://44dd0e22ec55.ngrok.io")
 
 socket.on('server-send-room', (data: string) => {
     if (data) {
@@ -56,7 +56,8 @@ const Demo = () => {
 
         socket.emit("client-send-user", { userID, gender })
 
-        message.loading('Đang tìm phòng...', 0)
+
+        message.loading('Đang tìm phòng...', 0);
     };
 
     useEffect(() => {
@@ -134,6 +135,7 @@ const Demo = () => {
                                         <Radio value="female" checked>Female </Radio>
                                     </Radio.Group>
                                 </Form.Item>
+                                <h4 style={{ color: "red" }}>* Giới tính chỉ chọn được 1 lần</h4>
                                 <Form.Item >
                                     <Button type="primary" htmlType="submit">
                                         Tìm kiếm

@@ -3,7 +3,7 @@ import { message } from "antd";
 import { io } from 'socket.io-client';
 import styled from 'styled-components';
 
-const socket = io("https://localchatappbdh.herokuapp.com/");
+const socket = io("https://44dd0e22ec55.ngrok.io");
 
 type User = {
     uid: string,
@@ -113,12 +113,8 @@ export default function ChatRoom(props: AppProps) {
 
     const [room, setRoom] = useState<string>("");
 
-    const male = () => {
-        message.error('Bạn nữ cùng phòng đã thoát phòng!');
-    };
-
-    const female = () => {
-        message.error('Bạn nam cùng phòng đã thoát phòng!');
+    const notification = () => {
+        message.error('Bạn cùng phòng đã thoát phòng!');
     };
 
     const focusInput = () => {
@@ -138,7 +134,6 @@ export default function ChatRoom(props: AppProps) {
 
     useEffect(() => {
         const iRoom = window.localStorage.getItem('room');
-        const gender = window.localStorage.getItem('gender');
 
         window.localStorage.setItem('userID', user?.uid);
 
@@ -146,25 +141,26 @@ export default function ChatRoom(props: AppProps) {
             setRoom(iRoom);
         }
 
-        socket.on('server-has-user-out', (data) => {
-            console.log(data, 'here');
-            if (gender === "male") {
-                male();
-            }
-            else {
-                female();
-            }
-        })
-
-        socket.emit('client-join-room', window.localStorage.getItem('room'));
-
         socket.emit('client-get-message-first', window.localStorage.getItem('room'));
 
         socket.on('server-send-message', (data) => {
             setMessages(data)
         })
+    }, [messages, user?.uid])
 
-    }, [user?.uid])
+    useEffect(() => {
+        const gender = window.localStorage.getItem('gender');
+
+        socket.on('server-has-user-out', (data) => {
+            if (gender !== data) {
+                notification();
+            }
+        })
+    }, [])
+
+    useEffect(() => {
+        socket.emit('client-join-room', window.localStorage.getItem('room'));
+    }, [])
 
     return (
         <Container>

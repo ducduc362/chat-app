@@ -5,7 +5,7 @@ import { useRouter } from 'next/dist/client/router';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 
-const socket = io('https://realtimechatappbdh.herokuapp.com/', { transports: ['websocket'] });
+const socket = io('https://realtimechatappbdh.herokuapp.com/', { transports: ['websocket', 'clear'] });
 
 socket.on('server-send-room', (data: string) => {
     if (data) {

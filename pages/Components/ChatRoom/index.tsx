@@ -3,7 +3,7 @@ import { message } from "antd";
 import { io } from 'socket.io-client';
 import styled from 'styled-components';
 
-const socket = io('https://realtimechatappbdh.herokuapp.com/', { transports: ['websocket'] });
+const socket = io('https://realtimechatappbdh.herokuapp.com/', { transports: ['websocket', 'clear'] });
 
 type User = {
     uid: string,

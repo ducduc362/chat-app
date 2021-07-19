@@ -7,6 +7,8 @@ import ChatRoom from "./Components/ChatRoom";
 import styleSignIn from '../styles/SignIn.module.css';
 import styleSignOut from '../styles/SignOut.module.css';
 
+const socket = io('https://realtimechatappbdh.herokuapp.com/', { transports: ['websocket', 'clear'] });
+
 type User = {
     gender: string
 }
@@ -17,8 +19,6 @@ const Container = styled.div`
     height: 100vh;
     overflow: auto;
 `
-
-const socket = io('https://realtimechatappbdh.herokuapp.com/', { transports: ['websocket'] });
 
 if (!firebase.apps.length) {
     firebase.initializeApp({

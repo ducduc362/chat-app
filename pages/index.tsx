@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/dist/client/router";
-import { io } from 'socket.io-client';
 import firebase from "firebase";
 import styled from "styled-components";
 import ChatRoom from "./Components/ChatRoom";
-import styleSignIn from '../styles/SignIn.module.css';
-import styleSignOut from '../styles/SignOut.module.css';
-
-const socket = io('https://realtimechatappbdh.herokuapp.com/', { transports: ['websocket', 'clear'] });
+import { SKContext } from '../store/SocketContext';
 
 type User = {
     gender: string
@@ -62,6 +58,8 @@ const signOut = async () => {
 
 
 export default function Home() {
+    const socket = useContext(SKContext);
+
     const [user, setUser] = useState<firebase.User | null>
         (() => auth.currentUser);
 
@@ -73,7 +71,6 @@ export default function Home() {
         const gender = window.localStorage.getItem('gender')
 
         socket.emit('client-out-room', { userID: uid, roomID: room, gender })
-
     }
 
     useEffect(() => {
@@ -110,29 +107,29 @@ export default function Home() {
             }
         })
 
-    }, [router]);
+    }, [router, socket]);
 
     return (
         <>
             {user ? (
                 <>
-                    <div className={styleSignOut.container}>
-                        <nav id={styleSignOut.sign_out}>
+                    <div id="div_sign_out">
+                        <nav id="sign_out">
                             <h2>Chat With Friends</h2>
-                            <div className={styleSignOut.divbutton}>
-                                <button type="submit" id={styleSignOut.leave_room} onClick={leaveRoom} >Leave room</button>
+                            <div id="divbutton">
+                                <button type="submit" id="leave_room" onClick={leaveRoom} >Leave room</button>
                                 <button type="submit" onClick={signOut}>Sign Out</button>
                             </div>
                         </nav>
                     </div>
                     <Container>
-                        <ChatRoom user={user} />
+                        <ChatRoom user={user} socket={socket} />
                     </Container>
                 </>
             ) : (
-                <div className={styleSignIn.container}>
-                    <div className={styleSignIn.nd}>
-                        <section id={styleSignIn.sign_in}>
+                <div id="container_sign_in">
+                    <div id="div_sign_in">
+                        <section id="sign_in">
                             <h1>Welcome to Chat Room</h1>
                             <button type="submit" onClick={signInWithGoogle}>Sign In With Google</button>
                         </section>

@@ -1,16 +1,19 @@
 import { useRef, useState, useEffect } from "react";
 import { message } from "antd";
-import { io } from 'socket.io-client';
 import { Container, Content, Chatroom, Chatform } from './styles';
-
-const socket = io('https://realtimechatappbdh.herokuapp.com/', { transports: ['websocket', 'clear'] });
 
 type User = {
     uid: string,
 }
 
+type Socket = {
+    emit: Function,
+    on: Function
+}
+
 interface AppProps {
-    user: User
+    user: User,
+    socket: Socket
 }
 
 type Messages = {
@@ -19,10 +22,14 @@ type Messages = {
     message: string
 }
 
-
+message.config({
+    duration: 1.5,
+    maxCount: 1,
+    rtl: true,
+});
 
 export default function ChatRoom(props: AppProps) {
-    const { user } = props;
+    const { user, socket } = props;
 
     const dummySpace = useRef<HTMLInputElement>(null);
 
@@ -62,24 +69,24 @@ export default function ChatRoom(props: AppProps) {
 
         socket.emit('client-get-message-first', window.localStorage.getItem('room'));
 
-        socket.on('server-send-message', (data) => {
+        socket.on('server-send-message', (data: Messages[]) => {
             setMessages(data)
         })
-    }, [messages, user?.uid])
+    }, [messages, socket, user?.uid])
 
     useEffect(() => {
         const gender = window.localStorage.getItem('gender');
 
-        socket.on('server-has-user-out', (data) => {
+        socket.on('server-has-user-out', (data: string) => {
             if (gender !== data) {
                 notification();
             }
         })
-    }, [])
+    }, [socket])
 
     useEffect(() => {
         socket.emit('client-join-room', window.localStorage.getItem('room'));
-    }, [])
+    }, [socket])
 
     return (
         <Container>

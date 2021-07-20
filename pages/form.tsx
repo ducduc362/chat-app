@@ -1,40 +1,13 @@
 import { Form, Button, Select, message, Radio } from 'antd';
-import 'antd/dist/antd.css';
-import { io } from 'socket.io-client';
 import { useRouter } from 'next/dist/client/router';
-import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-
-const socket = io('https://realtimechatappbdh.herokuapp.com/', { transports: ['websocket', 'clear'] });
-
-socket.on('server-send-room', (data: string) => {
-    if (data) {
-        window.localStorage.setItem('room', data);
-    }
-});
+import { useState, useEffect, useContext } from 'react';
+import { SKContext } from '../store/SocketContext';
 
 const { Option } = Select;
 
-const Flexbox = styled.div`
-    font-family: sans-serif;
-    text-align: center;
-    max-width: 728px;
-    margin: 0 auto;
-`
-
-const Border = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100vh;
-    padding: 10%;
-`
-
-const StyledButton = styled(Button)`
-    height: 45px;
-`;
-
 const Demo = () => {
+    const socket = useContext(SKContext);
+
     const [form] = Form.useForm();
 
     const router = useRouter();
@@ -44,7 +17,7 @@ const Demo = () => {
 
     const success = async () => {
         message.destroy()
-        await message.success('Tìm phòng thành công', 2);
+        await message.success('Tìm phòng thành công', 1);
     };
 
     const onFinish = (values: { gender: string; }) => {
@@ -56,11 +29,16 @@ const Demo = () => {
 
         socket.emit("client-send-user", { userID, gender })
 
-
         message.loading('Đang tìm phòng...', 0);
     };
 
     useEffect(() => {
+        socket.on('server-send-room', (data: string) => {
+            if (data) {
+                window.localStorage.setItem('room', data);
+            }
+        });
+
         let room = window.localStorage.getItem('room');
         const us = window.localStorage.getItem('userID');
         const gt = window.localStorage.getItem('gender');
@@ -85,12 +63,12 @@ const Demo = () => {
         }
 
         return () => clearInterval(loadRoom);
-    }, [phong, router]);
+    }, [phong, router, socket]);
 
     return (
         <div>
-            <Flexbox>
-                <Border>
+            <div id="container_form">
+                <div id="div_form">
                     <Form form={form} name="control-hooks" onFinish={onFinish}>
                         {gioitinh ? (
                             <>
@@ -114,9 +92,9 @@ const Demo = () => {
                                     </Select>
                                 </Form.Item>
                                 <Form.Item>
-                                    <StyledButton type="primary" htmlType="submit">
+                                    <Button type="primary" htmlType="submit" id="style_button">
                                         Tìm kiếm lại
-                                    </StyledButton>
+                                    </Button>
                                 </Form.Item>
                             </>
                         ) : (
@@ -144,8 +122,8 @@ const Demo = () => {
                             </ >
                         )}
                     </Form>
-                </Border>
-            </Flexbox>
+                </div>
+            </div>
         </div >
     );
 };

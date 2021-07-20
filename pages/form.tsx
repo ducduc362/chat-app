@@ -1,6 +1,7 @@
-import { Form, Button, Select, message, Radio } from 'antd';
+import { Form, Button, Select, message, Radio, Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/dist/client/router';
-import { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { SKContext } from '../store/SocketContext';
 
 const { Option } = Select;
@@ -19,6 +20,17 @@ const Demo = () => {
         message.destroy()
         await message.success('Tìm phòng thành công', 1);
     };
+
+    function confirm() {
+        Modal.confirm({
+            title: 'Confirm',
+            icon: <ExclamationCircleOutlined />,
+            content: '* Giới tính chỉ chọn được 1 lần',
+            okText: 'Đồng ý',
+            cancelText: 'Hủy',
+        }
+        );
+    }
 
     const onFinish = (values: { gender: string; }) => {
         const userID = window.localStorage.getItem('userID');
@@ -109,11 +121,10 @@ const Demo = () => {
                                     ]}
                                 >
                                     <Radio.Group>
-                                        <Radio value="male">Male</Radio>
-                                        <Radio value="female" checked>Female </Radio>
+                                        <Radio value="male" onClick={confirm}>Male</Radio>
+                                        <Radio value="female" onClick={confirm} checked>Female </Radio>
                                     </Radio.Group>
                                 </Form.Item>
-                                <h4 style={{ color: "red" }}>* Giới tính chỉ chọn được 1 lần</h4>
                                 <Form.Item >
                                     <Button type="primary" htmlType="submit">
                                         Tìm kiếm

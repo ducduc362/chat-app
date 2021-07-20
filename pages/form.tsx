@@ -78,7 +78,7 @@ const Demo = () => {
     }, [phong, router, socket]);
 
     return (
-        <div>
+        <div id="color_form">
             <div id="container_form">
                 <div id="div_form">
                     <Form form={form} name="control-hooks" onFinish={onFinish}>
@@ -111,7 +111,7 @@ const Demo = () => {
                             </>
                         ) : (
                             <>
-                                <h1>Vui lòng chọn giới tính</h1>
+                                <h1 style={{ color: 'white' }}>Vui lòng chọn giới tính</h1>
                                 <Form.Item
                                     name="gender"
                                     rules={[
@@ -121,8 +121,8 @@ const Demo = () => {
                                     ]}
                                 >
                                     <Radio.Group>
-                                        <Radio value="male" onClick={confirm}>Male</Radio>
-                                        <Radio value="female" onClick={confirm} checked>Female </Radio>
+                                        <Radio value="male" onClick={confirm} style={{ color: 'white' }}>Male</Radio>
+                                        <Radio value="female" onClick={confirm} style={{ color: 'white' }} checked>Female </Radio>
                                     </Radio.Group>
                                 </Form.Item>
                                 <Form.Item >

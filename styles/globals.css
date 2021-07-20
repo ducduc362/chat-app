@@ -133,6 +133,11 @@ p {
   margin-bottom: 5%;
 }
 
+#color_form {
+  background-color: rgb(40, 44, 52);
+  width: 100%;
+}
+
 #container_form {
   font-family: sans-serif;
   text-align: center;

@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-const Container = styled.main`
+export const Container = styled.main`
   max-width: 728px;
   margin: 0 auto;
   text-align: center;
 `;
 
-const Content = styled.div`
+export const Content = styled.div`
   padding: 10px;
   min-height: 85vh;
   margin: 10vh 0 5vh 0;
@@ -28,7 +28,7 @@ const Content = styled.div`
   }
 `;
 
-const Chatroom = styled.ul`
+export const Chatroom = styled.ul`
   li {
     display: flex;
     align-items: center;
@@ -39,7 +39,7 @@ const Chatroom = styled.ul`
   }
 `;
 
-const Chatform = styled.form`
+export const Chatform = styled.form`
   max-width: 728px;
   background: rgb(58, 58, 58);
   border-radius: 50px;
@@ -82,5 +82,3 @@ const Chatform = styled.form`
     cursor: not-allowed;
   }
 `;
-
-export { Container, Content, Chatroom, Chatform };
